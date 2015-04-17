@@ -8,12 +8,17 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, FBLoginViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        var loginView = FBLoginView();
+        loginView.readPermissions = ["public_profile","read_stream","user_photos"]
+        loginView.delegate = self
+        loginView.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin
+        loginView.center = view.center;
+        view.addSubview(loginView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,6 +26,25 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func loginView(loginView: FBLoginView!, handleError error: NSError!) {
+        println("Error")
+    }
+    
+    func loginViewFetchedUserInfo(loginView: FBLoginView!, user: FBGraphUser!) {
+        println("FetchedUserInfo")
+    }
+    
+    func loginViewShowingLoggedInUser(loginView: FBLoginView!) {
+        presentLoggedInViewController()
+    }
+    
+    func loginViewShowingLoggedOutUser(loginView: FBLoginView!) {
+        println("Logged Out User")
+    }
+    
+    func presentLoggedInViewController() {
+        performSegueWithIdentifier("loginSegue", sender: nil)
+    }
 
     /*
     // MARK: - Navigation
